@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import com.neueda.java.assignment.urlshortner.service.UrlShortnerService;
 
 @RestController
 public class UrlShortnerController {
+	Logger logger = LoggerFactory.getLogger(UrlShortnerController.class);
 	
 	@Autowired
     private UrlShortnerService urlService;
@@ -58,7 +61,7 @@ public class UrlShortnerController {
         if(StringUtils.isEmpty(shortLink))
         {
             UrlErrorResponseForUser urlErrorResponseDto = new UrlErrorResponseForUser();
-            urlErrorResponseDto.setErrorMessage("Invalid Url");
+            urlErrorResponseDto.setErrorMessage("Url is invalid");
             urlErrorResponseDto.setStatus("400");
             return new ResponseEntity<UrlErrorResponseForUser>(urlErrorResponseDto,HttpStatus.OK);
         }
@@ -76,7 +79,7 @@ public class UrlShortnerController {
         {
             urlService.deleteShortLink(urlToRet);
             UrlErrorResponseForUser urlErrorResponseDto = new UrlErrorResponseForUser();
-            urlErrorResponseDto.setErrorMessage("Url Expired. Please try generating a fresh one.");
+            urlErrorResponseDto.setErrorMessage("Url Expired. Please try generating a new one.");
             urlErrorResponseDto.setStatus("200");
             return new ResponseEntity<UrlErrorResponseForUser>(urlErrorResponseDto,HttpStatus.OK);
         }
