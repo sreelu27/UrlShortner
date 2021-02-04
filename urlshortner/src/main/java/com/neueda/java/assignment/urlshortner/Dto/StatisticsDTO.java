@@ -1,10 +1,6 @@
 package com.neueda.java.assignment.urlshortner.Dto;
 
-import java.io.Serializable;
-
-public class StatisticsDTO implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class StatisticsDTO{
 
 	private String name;
 
