@@ -11,7 +11,6 @@ public class StatisticsDTO{
 	}
 
 	public StatisticsDTO(String name, Long total) {
-		super();
 		this.name = name;
 		this.total = total;
 	}
