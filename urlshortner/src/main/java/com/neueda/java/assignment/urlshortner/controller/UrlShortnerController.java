@@ -37,14 +37,14 @@ public class UrlShortnerController {
 	@PostMapping("/generate")
     public ResponseEntity<?> generateShortLink(@RequestBody UrlDTO urlDto)
     {
-        Url urlToRet = urlService.generateShortUrl(urlDto);
+        Url url = urlService.generateShortUrl(urlDto);
 
-        if(urlToRet != null)
+        if(url != null)
         {
             UrlResponseForUser urlResponseDto = new UrlResponseForUser();
-            urlResponseDto.setOriginalUrl(urlToRet.getOriginalUrl());
-            urlResponseDto.setExpirationDate(urlToRet.getExpirationDate());
-            urlResponseDto.setShortUrl(urlToRet.getShortUrl());
+            urlResponseDto.setOriginalUrl(url.getOriginalUrl());
+            urlResponseDto.setExpirationDate(url.getExpirationDate());
+            urlResponseDto.setShortUrl(url.getShortUrl());
             return new ResponseEntity<UrlResponseForUser>(urlResponseDto, HttpStatus.OK);
         }
 
@@ -65,9 +65,9 @@ public class UrlShortnerController {
             urlErrorResponseDto.setStatus("400");
             return new ResponseEntity<UrlErrorResponseForUser>(urlErrorResponseDto,HttpStatus.OK);
         }
-        Url urlToRet = urlService.getEncodedUrl(shortLink);
+        Url url = urlService.getEncodedUrl(shortLink);
 
-        if(urlToRet == null)
+        if(url == null)
         {
             UrlErrorResponseForUser urlErrorResponseDto = new UrlErrorResponseForUser();
             urlErrorResponseDto.setErrorMessage("Url does not exist or it might have expired!");
@@ -75,18 +75,18 @@ public class UrlShortnerController {
             return new ResponseEntity<UrlErrorResponseForUser>(urlErrorResponseDto,HttpStatus.OK);
         }
 
-        if(urlToRet.getExpirationDate().isBefore(LocalDateTime.now()))
+        if(url.getExpirationDate().isBefore(LocalDateTime.now()))
         {
-            urlService.deleteShortLink(urlToRet);
+            urlService.deleteShortLink(url);
             UrlErrorResponseForUser urlErrorResponseDto = new UrlErrorResponseForUser();
             urlErrorResponseDto.setErrorMessage("Url Expired. Please try generating a new one.");
             urlErrorResponseDto.setStatus("200");
             return new ResponseEntity<UrlErrorResponseForUser>(urlErrorResponseDto,HttpStatus.OK);
         }
 
-        Statistic statistic = statisticService.mapFrom(headersMap, urlToRet);
+        Statistic statistic = statisticService.mapFrom(headersMap, url);
 		statisticService.create(statistic);
-        response.sendRedirect(urlToRet.getOriginalUrl());
+        response.sendRedirect(url.getOriginalUrl());
         return null;
     }
 
