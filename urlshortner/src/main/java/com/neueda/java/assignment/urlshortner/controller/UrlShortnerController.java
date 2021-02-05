@@ -36,7 +36,8 @@ public class UrlShortnerController {
 	
 	@PostMapping("/generate")
     public ResponseEntity<?> generateShortLink(@RequestBody UrlDTO urlDto)
-    {
+    {	
+		logger.info("Getting short url ....");
         Url url = urlService.generateShortUrl(urlDto);
 
         if(url != null)
@@ -65,6 +66,7 @@ public class UrlShortnerController {
             urlErrorResponseDto.setStatus("400");
             return new ResponseEntity<UrlErrorResponseForUser>(urlErrorResponseDto,HttpStatus.OK);
         }
+        logger.info("Getting encoded url ....");
         Url url = urlService.getEncodedUrl(shortLink);
 
         if(url == null)

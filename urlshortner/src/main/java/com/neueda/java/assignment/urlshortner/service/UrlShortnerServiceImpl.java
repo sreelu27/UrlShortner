@@ -2,6 +2,8 @@ package com.neueda.java.assignment.urlshortner.service;
 
 import java.time.LocalDateTime;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.neueda.java.assignment.urlshortner.Dto.UrlDTO;
@@ -14,6 +16,8 @@ import com.neueda.java.assignment.urlshortner.repository.UrlRepository;
 @Component
 public class UrlShortnerServiceImpl implements UrlShortnerService {
 	
+	Logger logger = LoggerFactory.getLogger(UrlShortnerService.class);
+	
 	@Autowired
     private UrlRepository urlRepository;
 	@Autowired
@@ -22,6 +26,7 @@ public class UrlShortnerServiceImpl implements UrlShortnerService {
 	private Helper helper;
 	@Override
 	public Url generateShortUrl(UrlDTO urlDto) {
+		logger.info("Creating a short url");
 		if(StringUtils.isNotEmpty(urlDto.getUrl())) {
 			String encodedUrl = shortenUrl.shortenUrl(urlDto.getUrl());
 			Url url = new Url();
@@ -41,6 +46,7 @@ public class UrlShortnerServiceImpl implements UrlShortnerService {
 	
 	@Override
 	public Url saveShortUrl(Url url) {
+		logger.info("Persisting a short url");
 		Url urltoSave = urlRepository.save(url);
         return  urltoSave;
 	}
@@ -53,6 +59,7 @@ public class UrlShortnerServiceImpl implements UrlShortnerService {
 
 	@Override
 	public void deleteShortLink(Url url) {
+		logger.info("Deleting short url");
 		urlRepository.delete(url);
 	}
 

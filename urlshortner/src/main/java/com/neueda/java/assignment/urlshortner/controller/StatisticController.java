@@ -20,7 +20,7 @@ public class StatisticController {
 
 	@GetMapping(path = "/summary")
 	public ResponseEntity<?> getSummary() {
-		//logger.info(Constants.GETTING_STATISTICS_SUMMARY);
+		logger.info("Getting all statistics ....");
 
 		StatisticsSummaryDTO summary = service.getStatisticsSummary();
 		return ResponseEntity.ok().body(summary);
@@ -29,7 +29,7 @@ public class StatisticController {
 	@GetMapping(path = "/summary/{code}")
 	public ResponseEntity<?> getSummaryByCode(@PathVariable String code) {
         	code = code.replaceAll("[\n|\r|\t]", "_");
-    		//logger.info(Constants.GETTING_STATISTICS_SUMMARY_BY_CODE, code);
+    		logger.info("Getting all statistics for "+ code);
     		StatisticsSummaryDTO summary = service.getStatisticsSummaryByCode(code);
     		return ResponseEntity.ok().body(summary);
 		

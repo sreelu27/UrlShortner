@@ -36,9 +36,7 @@ public class StatisticServiceImpl implements StatisticService{
 
 		logger.info("Mapping statistic from headers: {0}", userAgentString);
 
-		//UserAgent agent = UserAgent.parseUserAgentString(userAgentString);
 		String userAgent = System.getProperty( "http.agent" );
-		logger.info("Mapping statistic from headers: {0}", userAgent);
 		Parser uaParser = new Parser();
 		Client agent = uaParser.parse(userAgentString);
 		String deviceType = agent.device.family;
@@ -49,7 +47,6 @@ public class StatisticServiceImpl implements StatisticService{
 	}
 
 	public StatisticsSummaryDTO getStatisticsSummary() {
-		//logger.info(Constants.GETTING_STATISTICS_SUMMARY);
 
 		StatisticsSummaryDTO summaryDTO = new StatisticsSummaryDTO();
 		summaryDTO.setNumberOfHits(repository.getNumberOfHits());
@@ -63,8 +60,6 @@ public class StatisticServiceImpl implements StatisticService{
 	public StatisticsSummaryDTO getStatisticsSummaryByCode(String code) {
 
 		code = code.replaceAll("[\n|\r|\t]", "_");
-
-		//logger.info(Constants.GETTING_STATISTICS_SUMMARY_BY_CODE, code);
 
 		StatisticsSummaryDTO summaryDTO = new StatisticsSummaryDTO();
 		summaryDTO.setNumberOfHits(repository.getNumberOfHitsByCode(code));
