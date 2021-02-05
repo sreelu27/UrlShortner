@@ -36,7 +36,6 @@ public class StatisticServiceImpl implements StatisticService{
 
 		logger.info("Mapping statistic from headers: {0}", userAgentString);
 
-		String userAgent = System.getProperty( "http.agent" );
 		Parser uaParser = new Parser();
 		Client agent = uaParser.parse(userAgentString);
 		String deviceType = agent.device.family;

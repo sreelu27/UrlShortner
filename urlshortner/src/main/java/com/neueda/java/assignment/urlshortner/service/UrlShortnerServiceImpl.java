@@ -12,7 +12,6 @@ import com.neueda.java.assignment.urlshortner.helper.ShortenUrl;
 import com.neueda.java.assignment.urlshortner.model.Url;
 import com.neueda.java.assignment.urlshortner.repository.UrlRepository;
 
-
 @Component
 public class UrlShortnerServiceImpl implements UrlShortnerService {
 	
@@ -20,20 +19,17 @@ public class UrlShortnerServiceImpl implements UrlShortnerService {
 	
 	@Autowired
     private UrlRepository urlRepository;
-	@Autowired
-	private ShortenUrl shortenUrl;
-	@Autowired
-	private Helper helper;
+	
 	@Override
 	public Url generateShortUrl(UrlDTO urlDto) {
 		logger.info("Creating a short url");
 		if(StringUtils.isNotEmpty(urlDto.getUrl())) {
-			String encodedUrl = shortenUrl.shortenUrl(urlDto.getUrl());
+			String encodedUrl = ShortenUrl.shortenUrl(urlDto.getUrl());
 			Url url = new Url();
 			url.setCreationDate(LocalDateTime.now());
             url.setOriginalUrl(urlDto.getUrl());
             url.setShortUrl(encodedUrl);
-            url.setExpirationDate(helper.getExpirationDate(urlDto.getExpiryDate(),url.getCreationDate()));
+            url.setExpirationDate(Helper.getExpirationDate(urlDto.getExpiryDate(),url.getCreationDate()));
             Url urlToSave = saveShortUrl(url);
 
             if(urlToSave != null)
